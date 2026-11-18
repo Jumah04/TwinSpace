@@ -18,8 +18,6 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -67,19 +65,6 @@ class TwinContainerActivity : AppCompatActivity() {
     private var isGuestInitialized = false
 
     override fun attachBaseContext(newBase: Context) {
-        val intent = (newBase as? Activity)?.intent
-        val pkg = intent?.getStringExtra(EXTRA_TARGET_PACKAGE)
-        val uId = intent?.getIntExtra(EXTRA_USER_ID, 0) ?: 0
-
-        if (pkg != null) {
-            val engine = TwinVirtualEngine.getInstance(newBase)
-            if (engine != null) {
-                val vCtx = engine.createVirtualContext(newBase, pkg, uId)
-                virtualContext = vCtx
-                super.attachBaseContext(vCtx)
-                return
-            }
-        }
         super.attachBaseContext(newBase)
     }
 
@@ -153,7 +138,7 @@ class TwinContainerActivity : AppCompatActivity() {
             val engine = TwinVirtualEngine.getInstance(this) ?: return
             val clazz = engine.loadGuestClass(targetPackage!!, appClassName) ?: return
             if (Application::class.java.isAssignableFrom(clazz)) {
-                val appInstance = clazz.newInstance() as Application
+                val appInstance = clazz.getDeclaredConstructor().newInstance() as Application
                 val attachMethod = Application::class.java.getDeclaredMethod("attach", Context::class.java)
                 attachMethod.isAccessible = true
                 attachMethod.invoke(appInstance, virtualContext)
@@ -167,7 +152,7 @@ class TwinContainerActivity : AppCompatActivity() {
 
     private fun launchGuestActivity(guestClass: Class<*>, savedInstanceState: Bundle?) {
         try {
-            val instance = guestClass.newInstance() as Activity
+            val instance = guestClass.getDeclaredConstructor().newInstance() as Activity
             guestActivityInstance = instance
 
             // Inject base context and window
@@ -427,8 +412,13 @@ class TwinContainerActivity : AppCompatActivity() {
         decorView.addView(pillLayout)
     }
 
+    @Suppress("DEPRECATION")
     override fun onBackPressed() {
-        super.onBackPressed()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            onBackPressedDispatcher.onBackPressed()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onDestroy() {

@@ -1,7 +1,6 @@
 package com.twinspace.virtual.core
 
 import android.content.Context
-import android.content.pm.ApplicationInfo
 import android.util.Log
 import dalvik.system.DexClassLoader
 import dalvik.system.PathClassLoader
@@ -58,6 +57,7 @@ class TwinClassLoader(private val hostContext: Context) {
             val nativePath = nativeLibraryDir ?: hostContext.applicationInfo.nativeLibraryDir
 
             // Use DexClassLoader pointing to the APK source and optimized dex directory
+            @Suppress("DEPRECATION")
             DexClassLoader(
                 sourceDir,
                 optDir.absolutePath,

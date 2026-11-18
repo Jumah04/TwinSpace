@@ -7,7 +7,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.drawable.AdaptiveIconDrawable
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -207,13 +206,22 @@ class TwinVirtualEngine private constructor(private val appContext: Context) {
         return clonedApps.values.sortedByDescending { it.lastLaunchedAt }
     }
 
+    @Suppress("DEPRECATION")
+    private fun getAppInfoCompat(pm: PackageManager, packageName: String): ApplicationInfo {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            pm.getApplicationInfo(packageName, PackageManager.ApplicationInfoFlags.of(0L))
+        } else {
+            pm.getApplicationInfo(packageName, 0)
+        }
+    }
+
     /**
      * Clones an installed application into an isolated virtual space.
      */
     fun cloneApp(packageName: String, alias: String?): ClonedApp? {
         val pm = appContext.packageManager
         val appInfo = try {
-            pm.getApplicationInfo(packageName, 0)
+            getAppInfoCompat(pm, packageName)
         } catch (e: Exception) {
             Log.e(TAG, "Package $packageName not found on device", e)
             return null
@@ -322,7 +330,7 @@ class TwinVirtualEngine private constructor(private val appContext: Context) {
         val pm = appContext.packageManager
 
         val iconDrawable = try {
-            val appInfo = pm.getApplicationInfo(clone.packageName, 0)
+            val appInfo = getAppInfoCompat(pm, clone.packageName)
             pm.getApplicationIcon(appInfo)
         } catch (e: Exception) {
             null
@@ -343,7 +351,7 @@ class TwinVirtualEngine private constructor(private val appContext: Context) {
     fun createVirtualContext(baseContext: Context, packageName: String, userId: Int): TwinVirtualContext {
         val pm = appContext.packageManager
         val appInfo = try {
-            pm.getApplicationInfo(packageName, 0)
+            getAppInfoCompat(pm, packageName)
         } catch (e: Exception) {
             null
         }

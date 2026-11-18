@@ -1,8 +1,5 @@
 package com.twinspace.virtual.stub
 
-import android.app.Activity
-import android.os.Bundle
-
 /**
  * Stub Activities:
  * Declared in AndroidManifest.xml to satisfy Android's ActivityManagerService (AMS)

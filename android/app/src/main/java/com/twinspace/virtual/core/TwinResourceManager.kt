@@ -3,7 +3,6 @@ package com.twinspace.virtual.core
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.res.AssetManager
-import android.content.res.Configuration
 import android.content.res.Resources
 import android.util.Log
 import java.util.concurrent.ConcurrentHashMap
@@ -60,7 +59,7 @@ class TwinResourceManager(private val hostContext: Context) {
         try {
             TwinHiddenApiBypass.unseal()
             val assetManagerClass = AssetManager::class.java
-            val assetManagerInstance = assetManagerClass.newInstance()
+            val assetManagerInstance = assetManagerClass.getDeclaredConstructor().newInstance()
             val addAssetPathMethod = assetManagerClass.getDeclaredMethod(
                 "addAssetPath",
                 String::class.java
@@ -77,6 +76,7 @@ class TwinResourceManager(private val hostContext: Context) {
 
             // Create Resources instance
             val hostRes = hostContext.resources
+            @Suppress("DEPRECATION")
             val guestRes = Resources(
                 assetManagerInstance,
                 hostRes.displayMetrics,

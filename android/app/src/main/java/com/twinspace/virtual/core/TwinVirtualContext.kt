@@ -1,17 +1,14 @@
 package com.twinspace.virtual.core
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ApplicationInfo
-import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.content.res.Resources
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteDatabase.CursorFactory
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import com.twinspace.virtual.stub.TwinContainerActivity
