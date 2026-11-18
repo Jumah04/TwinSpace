@@ -1,157 +1,135 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.twinspace.app">
+  xmlns:tools="http://schemas.android.com/tools">
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+  <uses-permission android:name="android.permission.INSTALL_SHORTCUT"/>
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage"/>
+  <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" tools:ignore="QueryAllPackagesCondition"/>
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+  <uses-permission android:name="android.permission.VIBRATE"/>
+  <uses-permission android:name="android.permission.WAKE_LOCK"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
+  <queries>
+    <intent>
+      <action android:name="android.intent.action.MAIN"/>
+      <category android:name="android.intent.category.LAUNCHER"/>
+    </intent>
+    <intent>
+      <action android:name="android.intent.action.VIEW"/>
+      <category android:name="android.intent.category.BROWSABLE"/>
+      <data android:scheme="https"/>
+    </intent>
+  </queries>
+  <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="true" android:theme="@style/AppTheme" android:supportsRtl="true" android:largeHeap="true" android:requestLegacyExternalStorage="true" android:usesCleartextTraffic="true" android:networkSecurityConfig="@xml/network_security_config">
+    <meta-data android:name="expo.modules.updates.ENABLED" android:value="false"/>
+    <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="ALWAYS"/>
+    <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0"/>
+    <activity android:name=".MainActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize" android:theme="@style/Theme.App.SplashScreen" android:exported="true" android:screenOrientation="portrait">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:scheme="twinspace"/>
+        <data android:scheme="com.twinspace.app"/>
+      </intent-filter>
+    </activity>
 
-    <!-- Permissions for Application Discovery and Virtualization -->
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" tools:ignore="QueryAllPackagesCondition" />
-    <uses-permission android:name="android.permission.INSTALL_SHORTCUT" />
-    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-    
-    <!-- Network and System Permissions required by Cloned Apps -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    
-    <!-- Storage Sandboxing Permissions -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent>
-    </queries>
-
-    <application
-        android:name=".MainApplication"
-        android:label="@string/app_name"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:allowBackup="false"
-        android:theme="@style/AppTheme"
-        android:largeHeap="true"
+    <!-- TwinSpace Primary Container Activity -->
+    <activity
+        android:name="com.twinspace.virtual.stub.TwinContainerActivity"
+        android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|density"
         android:hardwareAccelerated="true"
-        android:requestLegacyExternalStorage="true"
-        android:usesCleartextTraffic="true"
-        android:networkSecurityConfig="@xml/network_security_config">
+        android:theme="@style/TwinVirtualTheme"
+        android:windowSoftInputMode="adjustResize"
+        android:exported="true">
+        <intent-filter>
+            <action android:name="com.twinspace.virtual.ACTION_LAUNCH" />
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+    </activity>
 
-        <!-- Main UI Host Activity -->
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+    <!-- Stub Activity: Standard LaunchMode -->
+    <activity
+        android:name="com.twinspace.virtual.stub.StubActivity"
+        android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|density"
+        android:hardwareAccelerated="true"
+        android:theme="@style/TwinVirtualTheme"
+        android:windowSoftInputMode="adjustResize"
+        android:exported="false" />
 
-            <!-- Deep linking for Home Screen shortcuts -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="twinspace" />
-            </intent-filter>
-        </activity>
+    <!-- Stub Activity: SingleTop LaunchMode -->
+    <activity
+        android:name="com.twinspace.virtual.stub.StubActivitySingleTop"
+        android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|density"
+        android:hardwareAccelerated="true"
+        android:launchMode="singleTop"
+        android:theme="@style/TwinVirtualTheme"
+        android:windowSoftInputMode="adjustResize"
+        android:exported="false" />
 
-        <!-- TwinSpace Primary Container Activity -->
-        <activity
-            android:name="com.twinspace.virtual.stub.TwinContainerActivity"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|density"
-            android:hardwareAccelerated="true"
-            android:theme="@style/TwinVirtualTheme"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.twinspace.virtual.ACTION_LAUNCH" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+    <!-- Stub Activity: SingleTask LaunchMode -->
+    <activity
+        android:name="com.twinspace.virtual.stub.StubActivitySingleTask"
+        android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|density"
+        android:hardwareAccelerated="true"
+        android:launchMode="singleTask"
+        android:theme="@style/TwinVirtualTheme"
+        android:windowSoftInputMode="adjustResize"
+        android:exported="false" />
 
-        <!-- Stub Activity: Standard LaunchMode -->
-        <activity
-            android:name="com.twinspace.virtual.stub.StubActivity"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|density"
-            android:hardwareAccelerated="true"
-            android:theme="@style/TwinVirtualTheme"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+    <!-- Stub Activity: SingleInstance LaunchMode -->
+    <activity
+        android:name="com.twinspace.virtual.stub.StubActivitySingleInstance"
+        android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|density"
+        android:hardwareAccelerated="true"
+        android:launchMode="singleInstance"
+        android:theme="@style/TwinVirtualTheme"
+        android:windowSoftInputMode="adjustResize"
+        android:exported="false" />
 
-        <!-- Stub Activity: SingleTop LaunchMode -->
-        <activity
-            android:name="com.twinspace.virtual.stub.StubActivitySingleTop"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|density"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleTop"
-            android:theme="@style/TwinVirtualTheme"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+    <!-- Stub Activity: Dialog Style -->
+    <activity
+        android:name="com.twinspace.virtual.stub.StubDialogActivity"
+        android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|density"
+        android:theme="@style/TwinVirtualTheme.Dialog"
+        android:windowSoftInputMode="adjustResize"
+        android:exported="false" />
 
-        <!-- Stub Activity: SingleTask LaunchMode -->
-        <activity
-            android:name="com.twinspace.virtual.stub.StubActivitySingleTask"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|density"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleTask"
-            android:theme="@style/TwinVirtualTheme"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+    <!-- Isolated Secondary Process Stubs for Stability & Crash Isolation -->
+    <activity
+        android:name="com.twinspace.virtual.stub.StubActivity$P0"
+        android:process=":twin_virtual0"
+        android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|density"
+        android:theme="@style/TwinVirtualTheme"
+        android:windowSoftInputMode="adjustResize"
+        android:exported="false" />
 
-        <!-- Stub Activity: SingleInstance LaunchMode -->
-        <activity
-            android:name="com.twinspace.virtual.stub.StubActivitySingleInstance"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|density"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleInstance"
-            android:theme="@style/TwinVirtualTheme"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+    <activity
+        android:name="com.twinspace.virtual.stub.StubActivity$P1"
+        android:process=":twin_virtual1"
+        android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|density"
+        android:theme="@style/TwinVirtualTheme"
+        android:windowSoftInputMode="adjustResize"
+        android:exported="false" />
 
-        <!-- Stub Activity: Dialog Style -->
-        <activity
-            android:name="com.twinspace.virtual.stub.StubDialogActivity"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|density"
-            android:theme="@style/TwinVirtualTheme.Dialog"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
-
-        <!-- Isolated Secondary Process Stubs for Stability & Crash Isolation -->
-        <activity
-            android:name="com.twinspace.virtual.stub.StubActivity$P0"
-            android:process=":twin_virtual0"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|density"
-            android:theme="@style/TwinVirtualTheme"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
-
-        <activity
-            android:name="com.twinspace.virtual.stub.StubActivity$P1"
-            android:process=":twin_virtual1"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|density"
-            android:theme="@style/TwinVirtualTheme"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
-
-        <!-- Sandboxed FileProvider -->
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
-
-    </application>
-
+    <!-- Sandboxed FileProvider -->
+    <provider
+        android:name="androidx.core.content.FileProvider"
+        android:authorities="${applicationId}.fileprovider"
+        android:exported="false"
+        android:grantUriPermissions="true">
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/file_paths" />
+    </provider>
+  </application>
 </manifest>

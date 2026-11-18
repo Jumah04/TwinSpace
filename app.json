@@ -40,7 +40,13 @@
           "image": "./assets/splash.png",
           "imageWidth": 180
         }
-      ]
-    ]
+      ],
+      "./plugins/withTwinSpace"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b2d13dd4-5206-4a90-8491-b319a43ee645"
+      }
+    }
   }
 }
