@@ -1,0 +1,34 @@
+{
+  "name": "twinspace",
+  "version": "1.0.0",
+  "description": "TwinSpace - Personal Android App Cloning and Virtualization Application",
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "prebuild": "expo prebuild --clean",
+    "build:apk": "cd android && ./gradlew assembleRelease",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "expo": "~52.0.0",
+    "expo-constants": "~17.0.3",
+    "expo-file-system": "~18.0.4",
+    "expo-font": "~13.0.1",
+    "expo-haptics": "~14.0.0",
+    "expo-linear-gradient": "~14.0.1",
+    "expo-splash-screen": "~0.29.13",
+    "expo-status-bar": "~2.0.0",
+    "lucide-react-native": "^0.460.0",
+    "react": "18.3.1",
+    "react-native": "0.76.3",
+    "react-native-safe-area-context": "4.12.0",
+    "react-native-screens": "~4.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.0",
+    "@types/react": "~18.3.12",
+    "typescript": "^5.3.3"
+  },
+  "private": true
+}
