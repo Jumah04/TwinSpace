@@ -50,7 +50,7 @@ class TwinVirtualContext(
 
     override fun getPackageName(): String = virtualPackageName
 
-    override fun getBasePackageName(): String = virtualPackageName
+    fun getBasePackageName(): String = virtualPackageName
 
     override fun getOpPackageName(): String = virtualPackageName
 

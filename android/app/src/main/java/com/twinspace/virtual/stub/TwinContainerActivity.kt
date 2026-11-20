@@ -42,7 +42,7 @@ import java.lang.reflect.Method
  * 6. Floating TwinSpace Status Indicator: A sleek, non-intrusive floating indicator
  *    confirming the app is running in an isolated clone sandbox.
  */
-class TwinContainerActivity : AppCompatActivity() {
+open class TwinContainerActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "TwinContainerActivity"
